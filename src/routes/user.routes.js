@@ -1,11 +1,11 @@
 import express from "express";
-import { registerUser, loginUser, logOutUser } from "../controllers/user.controller.js";
+import { registerUser, loginUser, logOutUser , refreshAccessToken} from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js"; // ✅ adjust path as needed
 
 const router = express.Router();
 
-// ✅ Apply multer middleware here
+// Apply multer middleware here
 router.post(
   "/register",
   upload.fields([
@@ -17,5 +17,6 @@ router.post(
 
 router.post("/login", loginUser);
 router.post("/logout", verifyJWT, logOutUser);
+router.route("/refresh-token").post(refreshAccessToken)
 
 export default router;
