@@ -1,27 +1,21 @@
-import { Router } from "express";
-import { loginUser, logOutUser, registerUser } from "../controllers/user.controller.js";
-import { upload } from "../middlewares/multer.middleware.js";
+import express from "express";
+import { registerUser, loginUser, logOutUser } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { upload } from "../middlewares/multer.middleware.js"; // ✅ adjust path as needed
 
-const router = Router();
+const router = express.Router();
 
-router.route("/register").post(
-    upload.fields([
-        {
-            name : "avatar",
-            maxCount : 1
-        },
-        {
-            name : "coverImage",
-            maxCount : 1
-        }
-    ]),
-    registerUser)
+// ✅ Apply multer middleware here
+router.post(
+  "/register",
+  upload.fields([
+    { name: "avatar", maxCount: 1 },
+    { name: "coverImage", maxCount: 1 }
+  ]),
+  registerUser
+);
 
-//secure route
-router.route("/logout").post(logOutUser)
-
-router.route("/login").post(verifyJWT,loginUser)
-
+router.post("/login", loginUser);
+router.post("/logout", verifyJWT, logOutUser);
 
 export default router;

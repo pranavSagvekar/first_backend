@@ -98,7 +98,7 @@ const loginUser = asyncHandler(async(req , res) => {
 
     const {email ,username , password} = req.body
 
-    if(!username || !email){
+    if(!username && !email){
         throw new apiError(400 , 'username or email is requird')
     }
 
@@ -142,7 +142,7 @@ const loginUser = asyncHandler(async(req , res) => {
 })
 
 
-const logOutUser = asyncHandler(async(res,res)=> {
+const logOutUser = asyncHandler(async(req,res)=> {
     User.findByIdAndUpdate(
         req.user._id , {
             $set : {
